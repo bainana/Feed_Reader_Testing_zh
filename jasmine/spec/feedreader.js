@@ -104,9 +104,8 @@ $(function() {
             });
         });
 
-        it('The loadFeed content is change', function (done) {
-            expect(firstFeed !== secondFeed).toBe(true);
-            done();
+        it('The loadFeed content is change', function () {
+            expect(firstFeed).not.toEqual(secondFeed);
         });
     });
 
