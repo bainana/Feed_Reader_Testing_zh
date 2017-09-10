@@ -60,8 +60,10 @@ $(function() {
          */
 
          it('The menu will show or hidden when the icon was clicked',function(){
-            expect()
-
+            $('.menu-icon-link').trigger('click');
+            expect(!$('body').hasClass('menu-hidden')).toBe(true);
+            $('.menu-icon-link').trigger('click');
+            expect($('body').hasClass('menu-hidden')).toBe(true);
          })
          /* TODO:
           * 写一个测试用例保证当菜单图标被点击的时候菜单会切换可见状态。这个
@@ -70,6 +72,13 @@ $(function() {
           */
     })
     /* TODO: 13. 写一个叫做 "Initial Entries" 的测试用例 */
+        describe('Initial Entries',function(){
+            beforeEach(function(){
+                expect($('.feed').find('.entry').length > 0).toBe(true);
+                done();
+            })
+
+        })
 
         /* TODO:
          * 写一个测试保证 loadFeed 函数被调用而且工作正常，即在 .feed 容器元素
@@ -80,6 +89,26 @@ $(function() {
          */
 
     /* TODO: 写一个叫做 "New Feed Selection" 的测试用例 */
+    describe('New Feed Selection', function(){
+        var firstFeed,secondFeed;
+
+        beforeEach(function (done) {
+            loadFeed(0, function () {
+                 firstFeed = $('.feed')[0].html;
+            done();
+            });
+
+            loadFeed(1, function () {
+                secondFeed = $('.feed')[0].html;
+              done();
+            });
+        });
+
+        it('The loadFeed content is change', function (done) {
+            expect(firstFeed !== secondFeed).toBe(true);
+            done();
+        });
+    });
 
         /* TODO:
          * 写一个测试保证当用 loadFeed 函数加载一个新源的时候内容会真的改变。
