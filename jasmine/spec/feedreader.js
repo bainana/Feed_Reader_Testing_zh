@@ -22,28 +22,29 @@ $(function() {
             expect(allFeeds.length).not.toBe(0);
         });
 
+        var sameDetection = function(val){
+          expect(val).toBeDefined();
+          expect(val).not.toBe('');
+          expect(val).toBe('string');
+        }
 
         /* TODO:
          * 编写一个测试遍历 allFeeds 对象里面的所有的源来保证有链接字段而且链接不是空的。
          */
 
          it('all url are defined', function(){
-            for(var i = 0;i < allFeeds.length; i++){
-                expect(allFeeds[i].url).toBeDefined();
-                expect(allFeeds[i].url).not.toBe('');
-                expect(typeof allFeeds[i].url).toBe('string')
-            }
+            $.each(allFeeds, function(index, feed){
+              sameDetection(feed.url);
+            })
          });
 
         /* TODO:
          * 编写一个测试遍历 allFeeds 对象里面的所有的源来保证有名字字段而且不是空的。
          */
         it('all name are defined', function(){
-            for(var i = 0;i < allFeeds.length; i++){
-                expect(allFeeds[i].name).toBeDefined();
-                expect(allFeeds[i].name).not.toBe('');
-                expect(typeof allFeeds[i].name).toBe('string')
-            }
+            $.each(allFeeds, function(index, feed){
+              sameDetection(feed.name);
+            })
          });
     });
 
@@ -94,14 +95,14 @@ $(function() {
 
         beforeEach(function (done) {
             loadFeed(0, function () {
-                 firstFeed = $('.feed')[0].html;
-            done();
+                firstFeed = $('.feed')[0].html;
+                loadFeed(1, function () {
+                    secondFeed = $('.feed')[0].html;
+                    done();
+                });
             });
 
-            loadFeed(1, function () {
-                secondFeed = $('.feed')[0].html;
-              done();
-            });
+
         });
 
         it('The loadFeed content is change', function () {
