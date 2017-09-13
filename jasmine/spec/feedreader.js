@@ -73,13 +73,15 @@ $(function() {
           */
     })
     /* TODO: 13. 写一个叫做 "Initial Entries" 的测试用例 */
-        describe('Initial Entries',function(){
-            beforeEach(function(){
-                expect($('.feed').find('.entry').length > 0).toBe(true);
-                done();
-            })
 
-        })
+        describe('Initial Entries', function () {
+            beforeEach(function (done) {
+              loadFeed(0, done);
+            });
+            it('can work', function () {
+              expect($('.feed').find('.entry').length > 0).toBe(true);
+            });
+        });
 
         /* TODO:
          * 写一个测试保证 loadFeed 函数被调用而且工作正常，即在 .feed 容器元素
