@@ -22,28 +22,29 @@ $(function() {
             expect(allFeeds.length).not.toBe(0);
         });
 
+        var sameDetection = function(val){
+          expect(val).toBeDefined();
+          expect(val).not.toBe('');
+          expect(typeof val).toBe('string');
+        }
 
         /* TODO:
          * 编写一个测试遍历 allFeeds 对象里面的所有的源来保证有链接字段而且链接不是空的。
          */
 
          it('all url are defined', function(){
-            for(var i = 0;i < allFeeds.length; i++){
-                expect(allFeeds[i].url).toBeDefined();
-                expect(allFeeds[i].url).not.toBe('');
-                expect(typeof allFeeds[i].url).toBe('string')
-            }
+            $.each(allFeeds, function(index, feed){
+              sameDetection(feed.url);
+            })
          });
 
         /* TODO:
          * 编写一个测试遍历 allFeeds 对象里面的所有的源来保证有名字字段而且不是空的。
          */
         it('all name are defined', function(){
-            for(var i = 0;i < allFeeds.length; i++){
-                expect(allFeeds[i].name).toBeDefined();
-                expect(allFeeds[i].name).not.toBe('');
-                expect(typeof allFeeds[i].name).toBe('string')
-            }
+            $.each(allFeeds, function(index, feed){
+              sameDetection(feed.name);
+            })
          });
     });
 
@@ -52,7 +53,7 @@ $(function() {
     describe('The menu',function(){
 
         it('feedList is hidden', function(){
-            expect($('menu-hidden')).toBe(true);
+            expect($('body').hasClass('menu-hidden')).toBe(true);
         })
         /* TODO:
          * 写一个测试用例保证菜单元素默认是隐藏的。你需要分析 html 和 css
@@ -60,8 +61,10 @@ $(function() {
          */
 
          it('The menu will show or hidden when the icon was clicked',function(){
-            expect()
-
+            $('.menu-icon-link').trigger('click');
+            expect(!$('body').hasClass('menu-hidden')).toBe(true);
+            $('.menu-icon-link').trigger('click');
+            expect($('body').hasClass('menu-hidden')).toBe(true);
          })
          /* TODO:
           * 写一个测试用例保证当菜单图标被点击的时候菜单会切换可见状态。这个
@@ -70,6 +73,14 @@ $(function() {
           */
     })
     /* TODO: 13. 写一个叫做 "Initial Entries" 的测试用例 */
+        describe('Initial Entries',function(){
+            beforeEach(function(){
+                loadFeed(0, function () {
+                    expect($('.feed').find('.entry').length > 0).toBe(true);
+                   done();
+                 });
+            })
+        });
 
         /* TODO:
          * 写一个测试保证 loadFeed 函数被调用而且工作正常，即在 .feed 容器元素
@@ -80,6 +91,25 @@ $(function() {
          */
 
     /* TODO: 写一个叫做 "New Feed Selection" 的测试用例 */
+    describe('New Feed Selection', function(){
+        var firstFeed,secondFeed;
+
+        beforeEach(function (done) {
+            loadFeed(0, function () {
+                firstFeed = $('.feed').html();
+                loadFeed(1, function () {
+                    secondFeed = $('.feed').html();
+                    done();
+                });
+            });
+
+
+        });
+
+        it('The loadFeed content is change', function () {
+            expect(firstFeed).not.toEqual(secondFeed);
+        });
+    });
 
         /* TODO:
          * 写一个测试保证当用 loadFeed 函数加载一个新源的时候内容会真的改变。
